@@ -10,6 +10,7 @@ setup(
         'scanpy>=1.9.0',
         'anndata>=0.9.0',
         'pandas>=2',
-        'numba>=0.57.1',
+        'dask',
+        'pandarallel'
     ]
 )
