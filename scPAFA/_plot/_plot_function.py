@@ -210,3 +210,29 @@ def draw_cluster_heatmap_category(
     g.ax_col_dendrogram.legend(loc='best', ncol=1,title = label_column,frameon=False)
     
     return g
+
+def draw_cluster_heatmap_R2(
+    model:mfx.mofa_model = None,*args, **kwargs):
+    
+    """
+    Create a clustered heatmap of R2 values from a MoFA model.
+
+    This function generates a clustered heatmap of R2 values calculated from a MoFA model.
+
+    Parameters:
+    - model (mfx.mofa_model.Model): The MoFA model from which R2 values will be retrieved.
+    - *args, **kwargs: Additional arguments that can be passed to Seaborn's `clustermap` function.
+
+    Returns:
+    - sns.ClusterGrid: The Seaborn ClusterGrid object representing the clustered heatmap of R2 values.
+    """
+    
+    R2_dataframe = model.get_r2().pivot(index='View', columns='Factor', values='R2')
+    R2_dataframe=R2_dataframe.rename_axis(None)
+    R2_dataframe.columns=R2_dataframe.columns.rename(None)
+   
+    g = sns.clustermap(R2_dataframe,cmap = sns.diverging_palette(220, 20, as_cmap=True),col_cluster=False,*args, **kwargs)
+    g.fig.subplots_adjust(right=0.6)
+    g.ax_cbar.set_position((0.8, .15, .03, .2))
+    g.ax_cbar.set_title('R2')
+    return g

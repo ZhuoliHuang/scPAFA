@@ -1,4 +1,5 @@
 import pandas as pd
+import mofax as mfx
 from scipy import stats
 from scipy.stats import mannwhitneyu, wilcoxon, kruskal
 from scipy.stats import ttest_rel, ttest_ind, f_oneway
@@ -279,3 +280,25 @@ def cal_correlation(sample_factor_df, query_df,
     
     result_df['method'] = method
     return result_df
+
+def get_all_weights(model:mfx.mofa_model = None):
+    """
+    Get all weights from a MoFA model and combine them into a single DataFrame.
+
+    This function iterates over the views in a MoFA model and retrieves the weights
+    for each view. It then combines these weights into a single DataFrame with
+    appropriately labeled columns.
+
+    Parameters:
+    - model (mfx.mofa_model.Model): The MoFA model from which weights will be retrieved.
+
+    Returns:
+    - pd.DataFrame: A DataFrame containing all the weights from the MoFA model.
+      Columns are labeled with view names and feature indices.
+    """
+    combine_df = pd.DataFrame()
+    for view in model.get_views():
+        a1 = model.get_weights(views=view,df =True)
+        a1.index = a1.index.astype(str) + '_view_'+view
+        combine_df = pd.concat([combine_df,a1])
+    return combine_df
