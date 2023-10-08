@@ -11,6 +11,8 @@ setup(
         'anndata>=0.9.0',
         'pandas>=2',
         'dask',
-        'pandarallel'
+        'pandarallel',
+        'plotnine',
+        'statsmodels'
     ]
 )
