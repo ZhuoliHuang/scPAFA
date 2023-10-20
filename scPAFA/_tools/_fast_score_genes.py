@@ -33,20 +33,6 @@ def _sparse_nanmean(X, axis):
 
     return m
 
-def _check_use_raw(adata: ad.AnnData, use_raw: Union[None, bool]) -> bool:
-    """
-    Normalize checking `use_raw`.
-
-    My intentention here is to also provide a single place to throw a deprecation warning from in future.
-    """
-    if use_raw is not None:
-        return use_raw
-    else:
-        if adata.raw is not None:
-            return True
-        else:
-            return False
-
 def fast_sctl_score(
     adata:ad.AnnData = None,
     input_dict:dict = None,
@@ -55,7 +41,6 @@ def fast_sctl_score(
     random_seed: int = 0,
     ctrl_size: int = 50,
     n_bins: int = 25,
-    use_raw: Optional[bool] = None,
     gene_pool: Optional[Sequence[str]] = None):
     
     """
@@ -87,8 +72,6 @@ def fast_sctl_score(
         Number of reference genes to be sampled from each bin. Default is 50.
     n_bins:int 
         Number of expression level bins for sampling.Default is 25.
-    use_raw:Optional[bool]
-        Whether to use raw attribute of adata. Defaults to True if .raw is present.
     gene_pool: Optional[Sequence[str]]
         Genes for sampling the reference set. Default is all genes.
     
@@ -100,7 +83,7 @@ def fast_sctl_score(
     if not isinstance(adata, ad.AnnData):
         raise ValueError("adata must be a valid AnnData object.")
 
-    if not isinstance(input_dict, Dict):
+    if not isinstance(input_dict, dict):
         raise ValueError("input_dict must be a dict.")
     
     if not isinstance(score_batch_size, int) or score_batch_size <= 0:
@@ -148,8 +131,7 @@ def fast_sctl_score(
         return score
     
     
-    use_raw = _check_use_raw(adata, use_raw)
-    var_names = adata.raw.var_names if use_raw else adata.var_names
+    var_names = adata.var_names
 
     if gene_pool is None:
         gene_pool = list(var_names)
@@ -158,7 +140,7 @@ def fast_sctl_score(
     if not gene_pool:
         raise ValueError("No valid genes were passed for reference set.")
     
-    _adata = adata.raw if use_raw else adata
+    _adata = adata.raw
     _adata_subset = (_adata[:, gene_pool] if len(gene_pool) < len(_adata.var_names) else _adata)
     
     sparse_or_not = issparse(_adata_subset.X)

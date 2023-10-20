@@ -251,7 +251,7 @@ def cal_correlation(sample_factor_df, query_df,
         raise ValueError("Indices of the dataframes are not equal")
 
     # Initialize an empty result dataframe
-    result_df = pd.DataFrame(columns=['column1', 'column2', 'Correlation', 'p_value'])
+    result_df = pd.DataFrame(columns=['column1', 'column2', 'Correlation', 'P-Value'])
 
     # Get the column names of dataframes A and B
     a_columns = sample_factor_df.columns
