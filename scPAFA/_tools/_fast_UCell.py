@@ -20,6 +20,7 @@ def fast_ucell_rank(
     """
     Perform a fast UCell analysis on single-cell RNA-seq data. Step1 ranking.
     For each cell, rank gene expression(from count or lognormoalized data) from high to low.
+    UCell algorithm: Andreatta, M., & Carmona, S. J. (2021). UCell: Robust and scalable single-cell gene signature scoring. 
 
     Parameters
     ----------
@@ -137,6 +138,7 @@ def fast_ucell_score(
     
     """
     Perform a fast UCell analysis on single-cell RNA-seq data.
+    UCell algorithm: Andreatta, M., & Carmona, S. J. (2021). UCell: Robust and scalable single-cell gene signature scoring.
 
     Parameters
     ----------

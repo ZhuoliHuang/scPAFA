@@ -1,2 +1,2 @@
-from ._Dict import generate_scPAFA_dict
-from ._Mofa import RunMofapy2
+from ._Dict import generate_scpafa_input
+from ._Mofa import run_mofapy2

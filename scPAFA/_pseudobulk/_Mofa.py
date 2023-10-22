@@ -1,7 +1,7 @@
 from scPAFA.run.entry_point import entry_point
 import pandas as pd
 
-def RunMofapy2(
+def run_mofapy2(
  long_table:pd.DataFrame = None,
  scale_views:bool = False,
  factor_number:int = 10,
