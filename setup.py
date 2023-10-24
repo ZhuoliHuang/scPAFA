@@ -9,10 +9,13 @@ setup(
     install_requires=[
         'scanpy>=1.9.0',
         'anndata>=0.9.0',
-        'pandas>=2',
-        'dask',
-        'pandarallel',
+        'mofax == 0.3.6',
+        'pandas>=2.0.3',
         'plotnine',
-        'statsmodels'
+        'statsmodels',
+        'pathos',
+        'tqdm',
+        'pyarrow',
+        'fastparquet'
     ]
 )
