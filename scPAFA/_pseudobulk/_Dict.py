@@ -26,13 +26,13 @@ def pseudobulk_qc(
         for column in dataframe1.columns:
             samples = dataframe1.index[dataframe1[column]].tolist()
             result_dict[column] = samples
-        #filter_cells_without_enough_samples
+        #filter_views_without_enough_samples
         result_dict = {cell_type: samples for cell_type, samples in result_dict.items() if len(samples) >= min_sample_per_view}
         output1 = np.array(list(result_dict.keys()))
         output2 = result_dict
         print('Done_Qc')
     else:
-        raise ValueError("Error: The columns you provided are not both category data types")
+        raise ValueError("Error: The columns you provided are not all category data types")
     return output1,output2
 
 #calulate and generate mean or median of PAS each sample*view
@@ -105,6 +105,8 @@ def change_to_long(usedict:dict = None):
         view_dataframe_long = view_dataframe_long.melt(id_vars='sample')
         view_dataframe_long['view'] = key
         view_dataframe_long.rename(columns={'variable': 'feature'}, inplace=True)
+        #avoid sample feature name in different views
+        view_dataframe_long.feature = view_dataframe_long.feature.astype(str)+'_View_'+view_dataframe_long.view.astype(str)
         usedict['view_sample_long'][key] = view_dataframe_long
     print('Done_longtable')
     return usedict
@@ -121,7 +123,8 @@ def generate_scpafa_input(
     regress_out:bool = False,
     sample_metadata:pd.DataFrame=None,
     regress_categorical_variable:list = [],
-    regress_continuous_variable:list = []
+    regress_continuous_variable:list = [],
+    return_full_dict:bool = False
     ):
     """
     Generate a dictionary containing all information for scPAFA, including sample*view matrices and long-format tables.
@@ -149,9 +152,9 @@ def generate_scpafa_input(
     sample_metadata : pd.DataFrame,
         A Dataframe containing information of samples (should contain all samples in metadata),
         row index as samples, columns as information (for example : batch).
-    regress_categorical_variable : list,
+    regress_categorical_variable: list,
         A list of columns in sample_metadata that needs to be regress_out, dtype as category.
-    regress_continuous_variable:list ,
+    regress_continuous_variable: list ,
         A list of columns in sample_metadata that needs to be regress_out, dtype as int or float.
 
     Returns
@@ -171,6 +174,7 @@ def generate_scpafa_input(
         
     if sample_column not in metadata.columns or view_column not in metadata.columns:
         raise ValueError("Error: 'sample_column' or 'view_column' not found in metadata")
+    
     
     if (top_percentage < 0) or (top_percentage > 1):
         raise ValueError("Error: 'top_percentage' must > 0 and <= 1")
@@ -216,5 +220,111 @@ def generate_scpafa_input(
     scPAFA_dict['long_table_for_mofa'] = combined_long_df
     del scPAFA_dict['PAS']
     
-    return scPAFA_dict
+    if return_full_dict:
+        return scPAFA_dict
+    else:
+        return scPAFA_dict['long_table_for_mofa']
   
+# generrate a multi group pseudobulk dataframe to run mofapy2
+def generate_scpafa_input_multigroup(
+    metadata:pd.DataFrame,
+    PAS_dataframe:pd.DataFrame,
+    sample_column:str,
+    view_column:str,
+    group_column:str,
+    min_cell_number_per_sample: int = 10,
+    min_percentage_sample_per_view: float = 0.75,
+    min_sample_per_view:int = 15,
+    top_percentage:float = 0.25):
+
+    """
+    Generate a dictionary containing all information for scPAFA, including sample*view matrices and long-format tables.
+
+    Parameters
+    ----------
+    metadata : pd.DataFrame
+        A DataFrame containing sample and view information, row index as cell. For example: adata.obs.
+    PAS_dataframe : pd.DataFrame
+        A DataFrame with cells as rows, pathways as columns, containing PAS data.
+        (the output of pyUCell or other method).
+    sample_column : str
+        Column name containing sample information.
+    view_column : str
+        Column name containing view (cell type) information.
+    min_cell_number_per_sample : int
+        Minimum number of cells required per sample. Default is 10.
+    min_percentage_sample_per_view:
+        The percentage of minimum number of samples required per view in each group. Default is 0.75. 
+    min_sample_per_view : int
+        Minimum number of samples required per view. Default is 15. 
+    top_percentage: float
+        A float >0 and <= 1. Select the top 25%(Default) pathways with the maximum variance across samples.
+
+    Returns
+    -------
+    dict
+        A long-format tables.
+    """
+
+    if metadata is None or not isinstance(metadata, pd.DataFrame):
+        raise ValueError("Error: 'metadata' must be a valid DataFrame")
+    
+    if PAS_dataframe is None or not isinstance(PAS_dataframe, pd.DataFrame):
+        raise ValueError("Error: 'PAS_dataframe' must be a valid DataFrame")
+    
+    if not all((metadata.index == PAS_dataframe.index)):
+        raise ValueError("Error: The index of metadata and PAS_dataframe must be identical")
+
+    if (min_percentage_sample_per_view < 0) or (min_percentage_sample_per_view > 1):
+        raise ValueError("Error: 'min_percentage_sample_per_view' must > 0 and <= 1")
+
+    if sample_column not in metadata.columns or view_column not in metadata.columns or group_column not in metadata.columns:
+        raise ValueError("Error: 'sample_column' or 'view_column' or 'group_column' not found in metadata")
+    
+    if (top_percentage < 0) or (top_percentage > 1):
+        raise ValueError("Error: 'top_percentage' must > 0 and <= 1")
+
+    if (metadata[sample_column].dtype == 'category') & (metadata[group_column].dtype == 'category'):
+        dataframe1 = pd.crosstab(metadata[sample_column],metadata[group_column])
+    else:
+        raise ValueError("Error: The columns you provided are not all category data types")
+    
+    if len(metadata[group_column].value_counts()) < 2:
+        raise ValueError("Error: Groups should more than 2")
+    else:
+        print(str(len(metadata[group_column].value_counts()))+ ' groups indentified')
+        
+    count_non_zero = dataframe1[dataframe1 != 0].count(axis=1)
+    if count_non_zero.sum() > len(count_non_zero):
+        raise ValueError("Error: Different groups have overlap samples")
+    
+    # to_cal_number_of_samples_in_each_group
+    sample_meta = metadata[[sample_column,group_column]]
+    sample_meta = sample_meta.drop_duplicates(subset=sample_column,ignore_index=True)
+    sample_series = sample_meta[group_column].value_counts()*min_percentage_sample_per_view
+    
+    longdf_list = []
+    
+    for group in metadata[group_column].value_counts().index:
+        print('processing group '+group)
+        
+        group_metadata = metadata[metadata[group_column] == group]
+        group_PAS = PAS_dataframe.loc[group_metadata.index]
+        
+        group_longdf = generate_scpafa_input(metadata=group_metadata,
+                                PAS_dataframe=group_PAS,
+                                min_cell_number_per_sample=min_cell_number_per_sample,
+                                min_sample_per_view=max(min_sample_per_view,round(sample_series[group])),
+                                sample_column=sample_column,
+                                view_column=view_column,
+                                top_percentage=top_percentage,
+                                return_full_dict = False)
+        
+        group_longdf.loc[:,'group'] = group
+        
+        longdf_list.append(group_longdf)
+    
+    #multigroup_dataframe
+    result_df = pd.concat(longdf_list, axis=0, ignore_index=True)
+    
+    return result_df
