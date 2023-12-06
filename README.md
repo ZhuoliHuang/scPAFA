@@ -3,12 +3,14 @@
 # scPAFA
 
 **Single Cell Pathway Activity Factor Analysis**
+
 A framework for meaningful bio pathway detection based on MOFA.
+
+### A typical workflow
 
 <img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/b8bdee9e-b98f-467a-b345-7ffb5acfbfd9" width="900" height="500">
 
 
-### A typical workflow
 **step1:** Download pathway information and generate pathway dictionary
   
 The pathway input of scPAFA is a python dict, each item with a pathway name as key and a list of genes as values.
