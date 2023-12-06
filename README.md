@@ -1,5 +1,5 @@
+<img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/3b3de70c-0bb6-438b-84e8-aaa705897390" width="200" height="200">
 # scPAFA
-![image](https://github.com/ZhuoliHuang/scPAFA/assets/61071877/3b3de70c-0bb6-438b-84e8-aaa705897390)
 **Single Cell Pathway Activity Factor Analysis**
 
 A framework for meaningful bio pathway detection based on MOFA.
