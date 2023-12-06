@@ -1,11 +1,12 @@
+<img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/3b3de70c-0bb6-438b-84e8-aaa705897390" align="left" width="240" height="200">
 
 # scPAFA
-<img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/3b3de70c-0bb6-438b-84e8-aaa705897390" align="right" width="240" height="200">
 
 **Single Cell Pathway Activity Factor Analysis**
 A framework for meaningful bio pathway detection based on MOFA.
 
-![image](https://github.com/ZhuoliHuang/scPAFA/assets/61071877/b8bdee9e-b98f-467a-b345-7ffb5acfbfd9)
+<img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/b8bdee9e-b98f-467a-b345-7ffb5acfbfd9" width="900" height="500">
+
 
 ### A typical workflow
 **step1:** Download pathway information and generate pathway dictionary
