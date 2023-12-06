@@ -12,7 +12,7 @@ A framework for meaningful bio pathway detection based on MOFA.
 
 # A typical workflow
 
-<img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/b8bdee9e-b98f-467a-b345-7ffb5acfbfd9" width="900" height="400">
+<img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/b8bdee9e-b98f-467a-b345-7ffb5acfbfd9" width="800" height="350">
 
 
 **step1:** Download pathway information and generate pathway dictionary
