@@ -1,4 +1,4 @@
-<img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/3b3de70c-0bb6-438b-84e8-aaa705897390" align="left" width="240" height="200">
+<img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/3b3de70c-0bb6-438b-84e8-aaa705897390" align="right" width="240" height="200">
 
 # scPAFA
 
