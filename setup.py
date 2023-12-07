@@ -15,7 +15,6 @@ setup(
         'statsmodels',
         'pathos',
         'tqdm',
-        'pyarrow',
-        'fastparquet'
+        'nheatmap'
     ]
 )
