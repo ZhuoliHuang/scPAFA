@@ -206,8 +206,8 @@ def draw_cluster_heatmap(
     sample_factor_df:pd.DataFrame = None,
     sample_annotaion_df:pd.DataFrame = None,
     p_value_dataframe:pd.DataFrame = None,
-    cmapCenter='RdBu_r',
-    cmapDiscrete='tab20',
+    cmapCenter:str='RdBu_r',
+    cmapDiscrete:str='tab20',
     *args, **kwargs):
     
     """
