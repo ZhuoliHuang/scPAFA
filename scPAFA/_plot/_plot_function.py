@@ -206,6 +206,8 @@ def draw_cluster_heatmap(
     sample_factor_df:pd.DataFrame = None,
     sample_annotaion_df:pd.DataFrame = None,
     p_value_dataframe:pd.DataFrame = None,
+    cmapCenter='RdBu_r',
+    cmapDiscrete='tab20',
     *args, **kwargs):
     
     """
@@ -243,7 +245,7 @@ def draw_cluster_heatmap(
     bounds = set(factor_color_dataframe['Significance'].values)
     cmap_sig = ListedColormap([colors_dict[key] for key in bounds])
     
-    g = nhm(data=sample_factor_df,dfr=sample_annotaion_df,dfc=factor_color_dataframe,linewidths=0, cmaps={'Significance':cmap_sig}, showyticks=False,cmapCenter='RdBu',cmapDiscrete='tab20',*args, **kwargs)
+    g = nhm(data=sample_factor_df,dfr=sample_annotaion_df,dfc=factor_color_dataframe,linewidths=0, cmaps={'Significance':cmap_sig}, showyticks=False,cmapCenter=cmapCenter,cmapDiscrete=cmapDiscrete,*args, **kwargs)
     g.hcluster(optimal_ordering=True,col_cluster=False)
     fig, plots = g.run()
     
