@@ -1,1 +1,1 @@
-from ._plot_function import runumap_and_plot,plot_factor_scatter_2D,draw_cluster_heatmap
+from ._plot_function import runumap_and_plot,plot_factor_scatter_2D,draw_cluster_heatmap,plot_weights_butterfly
