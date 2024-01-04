@@ -257,7 +257,8 @@ def draw_cluster_heatmap(
     
     return fig
 
-def plot_weights_butterfly(weight_matrix, factor_name, figsize=(10, 8), positive_color='salmon', negative_color='lightblue'):
+def plot_weights_butterfly(weight_matrix, factor_name, figsize=(10, 8), positive_color='salmon', negative_color='lightblue',
+                           n_largest:int = 10,n_smallest:int = 10,label_beside_bar = True):
     
     """
     Create a butterfly plot displaying the top positive and negative weights associated with a given factor.
@@ -269,15 +270,17 @@ def plot_weights_butterfly(weight_matrix, factor_name, figsize=(10, 8), positive
     - figsize (tuple, optional): Size of the plot figure (width, height). Defaults to (10, 8).
     - positive_color (str, optional): Color for positive weights. Defaults to 'salmon'.
     - negative_color (str, optional): Color for negative weights. Defaults to 'lightblue'.
-
+    - n_largest (int, optional): Top n features to plot.
+    - n_smallest (int, optional):  Smallest n features to plot.
+    - label_beside_bar(bool, optional): True or False
     Returns:
     - plt: Matplotlib plot object displaying the butterfly plot of top positive and negative weights.
     """
 
     factor_selected = weight_matrix[factor_name]
 
-    top_10_positive = factor_selected.nlargest(10)
-    top_10_negative = factor_selected.nsmallest(10)
+    top_10_positive = factor_selected.nlargest(n_largest)
+    top_10_negative = factor_selected.nsmallest(n_smallest)
 
     top_10 = pd.concat([top_10_positive, top_10_negative])
     top_10 = top_10.sort_values(ascending=False)
@@ -285,17 +288,17 @@ def plot_weights_butterfly(weight_matrix, factor_name, figsize=(10, 8), positive
     plt.figure(figsize=figsize)
     ax = sns.barplot(x=top_10.values, y=top_10.index, palette=[positive_color if x >= 0 else negative_color for x in top_10.values])
 
-    # 在柱子上标注基因名字
-    for i, v in enumerate(top_10.values):
-        if v >= 0:
-            ax.text(-0.1, i, str(top_10.index[i]), va='center', ha='right')
-        else:
-            ax.text(0.1, i, str(top_10.index[i]), va='center')
-
+    if label_beside_bar:
+        for i, v in enumerate(top_10.values):
+            if v >= 0:
+                ax.text(-0.1, i, str(top_10.index[i]), va='center', ha='right')
+            else:
+                ax.text(0.1, i, str(top_10.index[i]), va='center')
+        ax.yaxis.set_visible(False)
+        sns.despine(left=True)
+        
     plt.xlabel('Weights')
     plt.ylabel('')
     plt.title(factor_name)
-
-    ax.yaxis.set_visible(False)
-    sns.despine(left=True)
+    
     return plt
