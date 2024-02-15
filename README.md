@@ -22,7 +22,7 @@ Pathway collection can be downloaded from MsigDB (https://www.gsea-msigdb.org/gs
 
 (2) Generate pathway dictionary
 
-We provided examples of constructing pathway dictionary from the MsigDB and NCATS bioplanet databases
+We provided examples of constructing pathway dictionary from the MsigDB and NCATS bioplanet databases.(https://github.com/ZhuoliHuang/scPAFA/blob/main/tutorial/generate_pathway_input.ipynb)
 
 **Step1:** Calculate Pathway Activity Score
 
