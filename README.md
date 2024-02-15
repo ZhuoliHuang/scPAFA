@@ -4,10 +4,7 @@
 
 **Single Cell Pathway Activity Factor Analysis**
 
-A framework for meaningful bio pathway detection based on MOFA.
-
-
-
+A Python library designed for large-scale single-cell datasets allowing rapid PAS computation and uncovering biologically interpretable disease-related multicellular pathway modules, which are low-dimensional representations of disease-related PAS variance in multiple cell types.
 
 
 # Workflow
