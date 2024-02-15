@@ -12,7 +12,7 @@ A Python library designed for large-scale single-cell datasets allowing rapid PA
 <img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/b8bdee9e-b98f-467a-b345-7ffb5acfbfd9" width="800" height="400">
 
 
-**step1:** Download pathway information and generate pathway dictionary
+**Pathway input:** Download pathway information and generate pathway dictionary
   
 The pathway input of scPAFA is a Python dictionary, each item with a pathway name as a key and a list of genes as values.
 
@@ -24,17 +24,18 @@ Pathway collection can be downloaded from MsigDB (https://www.gsea-msigdb.org/gs
 
 We provided examples of constructing pathway dictionary from the MsigDB and NCATS bioplanet databases
 
-
-**step2:** Calculate Pathway Activity Score
+**Step1:** Calculate Pathway Activity Score
 
 (1) Method based on UCell 
 
 (2) Methods based on AddMouduleScore(Seurat)/scanpy.tl.score_genes(Scanpy)
 
-**step3:** Pseudobulk processing and MOFA model training
+**Step2:** Pseudobulk processing and MOFA model training
 
-(1)  Pseudobulk processing
+**Step3:** MOFA model training
 
-(2)  MOFA model training
+(1)  single-group MOFA model training
+
+(2)  multi-group MOFA model training
 
 **step4:** Downstream analysis of the MOFA Model
