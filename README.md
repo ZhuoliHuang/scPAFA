@@ -17,10 +17,10 @@ A Python library designed for large-scale single-cell datasets allowing rapid PA
 The pathway input of scPAFA is a Python dictionary, each item with a pathway name as a key and a list of genes as values.
 
 (1) Download pathway collection
-Pathway collection can be downloaded from MsigDB (https://www.gsea-msigdb.org/gsea/msigdb/human/collections.jsp#H, 'JSON bundle' is recommended), or NCATS bioplanet (https://tripod.nih.gov/bioplanet/download/pathway.csv). Users can also use a custom pathway collection.
+Pathway collection can be downloaded from [MsigDB](https://www.gsea-msigdb.org/gsea/msigdb/human/collections.jsp#H) ('JSON bundle' is recommended), or [NCATS bioplanet](https://tripod.nih.gov/bioplanet/download/pathway.csv). Users can also use a custom pathway collection.
 
 (2) Generate pathway dictionary
-We provided examples of constructing pathway dictionary from the MsigDB and NCATS bioplanet databases.(https://github.com/ZhuoliHuang/scPAFA/blob/main/tutorial/generate_pathway_input.ipynb)
+We provided [examples](https://github.com/ZhuoliHuang/scPAFA/blob/main/tutorial/generate_pathway_input.ipynb) of constructing pathway dictionary from the MsigDB and NCATS bioplanet databases.
 
 **Step1:** Calculate Pathway Activity Score
 
