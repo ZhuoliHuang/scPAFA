@@ -17,25 +17,19 @@ A Python library designed for large-scale single-cell datasets allowing rapid PA
 The pathway input of scPAFA is a Python dictionary, each item with a pathway name as a key and a list of genes as values.
 
 (1) Download pathway collection
-
 Pathway collection can be downloaded from MsigDB (https://www.gsea-msigdb.org/gsea/msigdb/human/collections.jsp#H, 'JSON bundle' is recommended), or NCATS bioplanet (https://tripod.nih.gov/bioplanet/download/pathway.csv). Users can also use a custom pathway collection.
 
 (2) Generate pathway dictionary
-
 We provided examples of constructing pathway dictionary from the MsigDB and NCATS bioplanet databases.(https://github.com/ZhuoliHuang/scPAFA/blob/main/tutorial/generate_pathway_input.ipynb)
 
 **Step1:** Calculate Pathway Activity Score
 
-In step1, single-cell gene expression matrix and collection of pathways are used to compute PAS by ‘fast_Ucell’ or ‘fast_score_genes’. 
-
-These functions are more computationally efficient implementation of UCell and AddModuleScore (also known as ‘score_genes’ in Scanpy)
-
-(1) Method based on UCell 
-
-(2) Methods based on AddMouduleScore(Seurat)/scanpy.tl.score_genes(Scanpy)
+In step1, single-cell gene expression matrix and collection of pathways are used to compute PAS by ‘fast_Ucell’(example) or ‘fast_score_genes’(example). These functions are more computationally efficient implementation of UCell and AddModuleScore (also known as ‘score_genes’ in Scanpy)
 
 **Step2~3:** Pseudobulk processing and MOFA model training
-In step 2, single-cell PAS matrix is reformatted into a suitable input for MOFA along with cell-level metadata including sample/donor, cell type, and technical batch information. 
 
+In step 2, single-cell PAS matrix is reformatted into a suitable input (a long-table-like pandas dataframe) for Multi-Omics Factor Analysis (MOFA) along with cell-level metadata including sample/donor, cell type, and technical batch information. In step 3, MOFA model is trained to captured variance in PAS among different samples. Notably, MOFA contains general framework (single-group frame work) and multi-group framework,  the aim of multi-group framework is to find out which sources of variability are shared between the different groups. In the presence of clearly known batch effects, we recommend using multi-group MOFA+ framework for correction. We provided example of step 2 and 3.
 
 **step4:** Downstream analysis of the MOFA Model
+
+In step 4, together with sample-level clinical metadata, disease-related multicellular pathway modules (latent factor and its corresponding weights of pathways across cell types) can be identified by statistical analysis. Downstream analyses include characterization and interpretation of multicellular pathway modules, sample/donor stratification, and visualization on high-weighted pathways (example).
