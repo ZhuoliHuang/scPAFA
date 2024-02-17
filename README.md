@@ -24,7 +24,7 @@ We provided examples of constructing pathway dictionary from the MsigDB and NCAT
 
 **Step1:** Calculate Pathway Activity Score
 
-In step1, single-cell gene expression matrix and collection of pathways are used to compute PAS by ‘fast_Ucell’(example) or ‘fast_score_genes’(example). These functions are more computationally efficient implementation of UCell and AddModuleScore (also known as ‘score_genes’ in Scanpy)
+In step1, single-cell gene expression matrix and collection of pathways are used to compute PAS by ‘fast_Ucell’([example](https://github.com/ZhuoliHuang/scPAFA/blob/main/tutorial/step1_generate_PAS_UCell.ipynb)) or ‘fast_score_genes’([example](https://github.com/ZhuoliHuang/scPAFA/blob/main/tutorial/step1_generate_PAS_score_genes.ipynb)). These functions are more computationally efficient implementation of UCell and AddModuleScore (also known as ‘score_genes’ in Scanpy)
 
 **Step2~3:** Pseudobulk processing and MOFA model training
 
