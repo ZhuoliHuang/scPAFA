@@ -11,6 +11,7 @@ A Python library designed for large-scale single-cell datasets allowing rapid PA
 
 <img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/b8bdee9e-b98f-467a-b345-7ffb5acfbfd9" width="800" height="400">
 
+# Tutorial
 
 **Pathway input:** Download pathway information and generate a pathway dictionary
   
@@ -32,6 +33,6 @@ In step1, single-cell gene expression matrix and collection of pathways are used
 
 In step 2, the single-cell PAS matrix is reformatted into a suitable input ([a long-table-like pandas dataframe](https://github.com/bioFAM/mofapy2/blob/master/mofapy2/notebooks/getting_started_python.ipynb)) for [Multi-Omics Factor Analysis (MOFA)](https://biofam.github.io/MOFA2/index.html) along with cell-level metadata including sample/donor, cell type, and technical batch information. In step 3, MOFA model is trained to capture variance in PAS among different samples. Notably, MOFA contains general framework (single-group framework) and multi-group framework,  [the aim of multi-group framework is to find out which sources of variability are shared between the different groups](https://biofam.github.io/MOFA2/faq.html). In the presence of clearly known batch effects, we recommend using multi-group MOFA+ framework for correction. We provided [examples](https://github.com/ZhuoliHuang/scPAFA/blob/main/tutorial/steps2%263_Pseudobulk_processing_and_MOFA_model_training.ipynb) of steps 2 and 3.
 
-**step4:** Downstream analysis of the MOFA Model
+**Step4:** Downstream analysis of the MOFA Model
 
 In step 4, together with sample-level clinical metadata, disease-related multicellular pathway modules (latent factor and its corresponding weights of pathways across cell types) can be identified by statistical analysis. Downstream analyses include characterization and interpretation of multicellular pathway modules, sample/donor stratification, and visualization of high-weighted pathways (example).
