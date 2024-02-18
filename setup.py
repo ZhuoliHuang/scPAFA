@@ -15,6 +15,7 @@ setup(
         'statsmodels',
         'pathos',
         'tqdm',
-        'nheatmap'
+        'nheatmap',
+        'seaborn'
     ]
 )
