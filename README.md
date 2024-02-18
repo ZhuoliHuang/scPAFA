@@ -35,4 +35,4 @@ In step 2, the single-cell PAS matrix is reformatted into a suitable input ([a l
 
 **Step4:** Downstream analysis of the MOFA Model
 
-In step 4, together with sample-level clinical metadata, disease-related multicellular pathway modules (latent factor and its corresponding weights of pathways across cell types) can be identified by statistical analysis. Downstream analyses include characterization and interpretation of multicellular pathway modules, sample/donor stratification, and visualization of high-weighted pathways (example).
+In step 4, together with sample-level clinical metadata, disease-related multicellular pathway modules (latent factor and its corresponding weights of pathways across cell types) can be identified by statistical analysis. Downstream analyses include characterization and interpretation of multicellular pathway modules, sample/donor stratification, and visualization of high-weighted pathways ([example](https://github.com/ZhuoliHuang/scPAFA/blob/main/tutorial/step4_Downstream_analysis_of_the_MOFA_Model.ipynb)).
