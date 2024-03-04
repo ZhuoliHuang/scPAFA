@@ -11,6 +11,7 @@ setup(
         'anndata>=0.9.0',
         'mofax == 0.3.6',
         'pandas>=2.0.3',
+        'scipy == 1.11.3',
         'plotnine',
         'statsmodels',
         'pathos',
