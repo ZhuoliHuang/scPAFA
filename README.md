@@ -11,6 +11,26 @@ A Python library designed for large-scale single-cell datasets allowing rapid PA
 
 <img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/b8bdee9e-b98f-467a-b345-7ffb5acfbfd9" width="800" height="400">
 
+# Installation
+
+We recommend using scPAFA in a virtual environment.
+```
+conda create -n scPAFA_env python=3.10
+```
+### Install using pip
+```
+conda activate scPAFA_env
+pip install scPAFA
+```
+### Install from GitHub
+
+In your workdir
+```
+conda activate scPAFA_env
+git clone https://github.com/ZhuoliHuang/scPAFA
+cd ./scPAFA
+python setup.py install
+```
 # Tutorial
 
 **Pathway input:** Download pathway information and generate a pathway dictionary
@@ -38,8 +58,10 @@ In step 2, the single-cell PAS matrix is reformatted into a suitable input ([a l
 In step 4, together with sample-level clinical metadata, disease-related multicellular pathway modules (latent factor and its corresponding weights of pathways across cell types) can be identified by statistical analysis. Downstream analyses include characterization and interpretation of multicellular pathway modules, sample/donor stratification, and visualization of high-weighted pathways ([example](https://github.com/ZhuoliHuang/scPAFA/blob/main/tutorial/step4_Downstream_analysis_of_the_MOFA_Model.ipynb)).
 
 # Supported Systems
-including but not limited to：
+Including but not limited to：
+
 Ubuntu 20.04
+
 Windows 10/11
 
 # Other information
