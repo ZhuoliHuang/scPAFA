@@ -21,11 +21,6 @@ We recommend using scPAFA in a virtual environment.
 ```
 conda create -n scPAFA_env python=3.10
 ```
-### Install using pip
-```
-conda activate scPAFA_env
-pip install scPAFA
-```
 ### Install from GitHub
 
 In your workdir
@@ -68,4 +63,4 @@ Ubuntu 20.04
 
 Windows 10/11
 
-# Other information
+# Citation
