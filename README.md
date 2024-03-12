@@ -1,7 +1,6 @@
 # scPAFA
 
-
-<img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/3b3de70c-0bb6-438b-84e8-aaa705897390" align="right" width="192" height="160">
+<img src="https://github.com/ZhuoliHuang/scPAFA/assets/61071877/cde987e2-bfc7-4ece-b718-494a0318cb67" align="right" width="192" height="160">
 
 
 
