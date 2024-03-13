@@ -63,4 +63,4 @@ Ubuntu 20.04
 Windows 10/11
 
 # Citation
-If you use scPAFA in your research, please cite https://doi.org/10.1101/2024.03.11.584023
+scPAFA is now reported on biorxiv(https://www.biorxiv.org/content/10.1101/2024.03.11.584023v1).
