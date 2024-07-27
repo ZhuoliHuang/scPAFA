@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='scPAFA',
-    version='0.1.2',
+    version='0.1.3',
     author='Zhuoli Huang',
     author_email='bioagr_huangzl@163.com',
     url='https://github.com/ZhuoliHuang/scPAFA',
