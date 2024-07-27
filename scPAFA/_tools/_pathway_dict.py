@@ -93,7 +93,9 @@ def generate_pathway_input(adata: ad.AnnData,
     pathway_genes = pathway_genes[pd.Series(pathway_genes).isin(adata.var_names)]
     
     # Step5: Create a dictionary for each pathway with only genes that intersect with 'adata.var_names' (for fast_sctl_score)
-    filtered_gene_dict = {key: [gene for gene in value if gene in pathway_genes] for key, value in pathway_dict_filtered.items()}
+    pathway_df_filtered = pd.DataFrame([(k, gene) for k, v in pathway_dict_filtered.items() for gene in v], columns=['pathway', 'gene'])
+    pathway_df_filtered = pathway_df_filtered.loc[pathway_df_filtered['gene'].isin(pathway_genes)]
+    filtered_gene_dict = pathway_df_filtered.groupby('pathway')['gene'].apply(list)[pathway_dict_filtered.keys()].to_dict()    
     
     # Step6: Find the positions of intersecting genes in 'adata.X' and sort them from left to right
     pathway_genes_position = np.where(adata.var_names.isin(pathway_genes))[0]
