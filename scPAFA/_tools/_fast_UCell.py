@@ -3,6 +3,7 @@ import pandas as pd
 import anndata as ad
 import scipy
 import pathos
+import gc
 from tqdm import tqdm
 from math import ceil
 from scipy.sparse import issparse
@@ -216,8 +217,8 @@ def fast_ucell_score(
         return final_result
     
     print('Subset rank matrix by overlap genes in pathways')
-    final_csr_matrix = rankmatrix.copy()
-    final_csr_matrix = final_csr_matrix[:, input_dict['intersect_position']]
+    #final_csr_matrix = rankmatrix.copy()
+    final_csr_matrix = rankmatrix[:, input_dict['intersect_position']]
 
     print('Rank above maxRank to 0')
     final_csr_matrix.data[final_csr_matrix.data > maxRank] = 0
@@ -237,7 +238,7 @@ def fast_ucell_score(
     print('step2 calculating Score')
     print(str(num_batches) + ' batches need to score, with each max '+str(score_batch_size)+' cells')
     
-    final_score_list=[]
+    UCell_score_df = pd.DataFrame()
     
     for i_batch in range(num_batches):
         # divide into batch
@@ -252,12 +253,15 @@ def fast_ucell_score(
 
         #merge result for each batch
         Ucell_dataframe = pd.concat(score_results,axis=1)
-        final_score_list.append(Ucell_dataframe)
+        UCell_score_df = pd.concat([UCell_score_df,Ucell_dataframe], axis=0, ignore_index=True)
         
+        del score_results, Ucell_dataframe
+        gc.collect()
+
     print('Ucell_done')
     print('Outputing_dataframe')
     #merge all result
-    UCell_score_df = pd.concat(final_score_list, axis=0, ignore_index=True)
+    #UCell_score_df = pd.concat(final_score_list, axis=0, ignore_index=True)
     UCell_score_df.index = cell_index
 
     return UCell_score_df

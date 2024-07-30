@@ -2,11 +2,13 @@ import numpy as np
 import pandas as pd
 import anndata as ad
 import pathos
+import gc
+from functools import partial
 from scipy.sparse import issparse
 from typing import Sequence, Optional
 from math import ceil
 
-def _sparse_nanmean(X, axis):
+def _sparse_nanmean(X, axis, dtype_use):
     """
     np.nanmean equivalent for sparse matrices
     """
@@ -25,7 +27,7 @@ def _sparse_nanmean(X, axis):
     Y.eliminate_zeros()
 
     # the average
-    s = Y.sum(axis, dtype='float64')  # float64 for score_genes function compatibility)
+    s = Y.sum(axis, dtype=dtype_use)  # float64 for score_genes function compatibility)
     m = s / n_elements
 
     return m
@@ -38,6 +40,7 @@ def fast_sctl_score(
     random_seed: int = 0,
     ctrl_size: int = 50,
     n_bins: int = 25,
+    float_type: str = 'float64',
     gene_pool: Optional[Sequence[str]] = None):
     
     """
@@ -108,7 +111,7 @@ def fast_sctl_score(
         return control_genes    
     
     #score_core_function
-    def calculate_score_for_pathway(pathway_key):
+    def calculate_score_for_pathway(pathway_key, dtype_use):
         query_genes = np.where(all_gene.isin(pathway_dict_filtered_gene[pathway_key]))[0]
         control_genes = select_control_genes(pathway_genelist=pathway_dict_filtered_gene[pathway_key])
         control_genes = np.where(all_gene.isin(control_genes))[0]
@@ -117,14 +120,14 @@ def fast_sctl_score(
         X_control = X_to_use_batch[:, control_genes]
 
         if sparse_or_not:
-            X_list = np.array(_sparse_nanmean(X_list, axis=1)).flatten()
-            X_control = np.array(_sparse_nanmean(X_control, axis=1)).flatten()
+            X_list = np.array(_sparse_nanmean(X_list, axis=1, dtype_use = dtype_use)).flatten()
+            X_control = np.array(_sparse_nanmean(X_control, axis=1, dtype_use= dtype_use)).flatten()
         else:
-            X_list = np.nanmean(X_list, axis=1, dtype='float64')
-            X_control = np.nanmean(X_control, axis=1, dtype='float64')
+            X_list = np.nanmean(X_list, axis=1, dtype=dtype_use)
+            X_control = np.nanmean(X_control, axis=1, dtype=dtype_use)
 
         score = X_list - X_control
-        score = pd.Series(score, dtype='float64', name=pathway_key)
+        score = pd.Series(score, dtype=dtype_use, name=pathway_key)
 
         return score
     
@@ -145,7 +148,7 @@ def fast_sctl_score(
     
     if sparse_or_not:
         obs_avg = pd.Series(
-            np.array(_sparse_nanmean(_adata_subset.X, axis=0)).flatten(),
+            np.array(_sparse_nanmean(_adata_subset.X, axis=0,dtype_use=float_type)).flatten(),
             index=gene_pool,
         )  # average expression of genes
     else:
@@ -172,25 +175,30 @@ def fast_sctl_score(
     print(str(num_batches) + ' batches need to score, with each max '+str(score_batch_size)+' cells')
     
     keys = list(pathway_dict_filtered_gene.keys())
-    final_score_list=[]
     
+    score_df=pd.DataFrame()
+    chunksize = max(1, len(keys) // (n_cores_score * 2))
+
     for i_batch in range(num_batches):
         print('processing_batch_'+str((i_batch+1)))
         start = i_batch * score_batch_size
         end = min((i_batch + 1) * score_batch_size,X_to_use.shape[0])
        
         X_to_use_batch = X_to_use[start:end,:]
+        partial_function = partial(calculate_score_for_pathway, dtype_use=float_type)
         with pathos.pools.ProcessPool(nodes=n_cores_score) as pool:
-            score_results = pool.map(calculate_score_for_pathway,keys)
+            score_results = pool.map(partial_function,keys,chunksize = chunksize)
         
         score_dataframe = pd.concat(score_results,axis=1)
-        final_score_list.append(score_dataframe)
+        score_df = pd.concat([score_df,score_dataframe],axis=0,ignore_index=True)
+
+        del score_results, score_dataframe
+        gc.collect() 
         
     print('score_done')
     print('Outputing_dataframe')
-
     #output_score_df
-    score_df = pd.concat(final_score_list, axis=0, ignore_index=True)
+    #score_df = pd.concat(final_score_list, axis=0, ignore_index=True)
     score_df.index = _adata_subset.obs.index
     
     return score_df
