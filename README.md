@@ -71,8 +71,5 @@ Ubuntu 20.04
 Windows 10/11
 
 # Citation
-scPAFA is now reported on biorxiv.
-
-Huang, Z., Zheng, Y., Wang, W., Zhou, W., Wei, C., Zhang, X., ... & Yin, J. (2024). Uncovering disease-related multicellular pathway modules on large-scale single-cell transcriptomes with scPAFA. bioRxiv, 2024-03.
-
-doi: https://doi.org/10.1101/2024.03.11.584023
+If you use scPAFA, please cite.
+Huang, Z., Zheng, Y., Wang, W. et al. Uncovering disease-related multicellular pathway modules on large-scale single-cell transcriptomes with scPAFA. Commun Biol 7, 1523 (2024). https://doi.org/10.1038/s42003-024-07238-7
